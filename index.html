@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Waymark | A calmer way to find your next role</title>
+<meta name="description" content="A local-first job search workspace. Check eligibility, prepare tailored applications, and keep every follow-up in view.">
+<meta name="theme-color" content="#fafbfa"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="style.css"><script>try { const t = localStorage.getItem('waymark-theme'); if(t === 'dark' || t === 'light') document.documentElement.dataset.theme = t; } catch {}</script>
+<script src="main.js" defer></script>
+</head>
+<body id="top">
+<a class="skip" href="#main">Skip to content</a>
+<header><nav class="container navigation" aria-label="Main navigation">
+<a class="brand" href="#top" aria-label="Waymark home"><svg viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" rx="11"/><path d="m9 13 5 15 6-11 6 11 5-15"/></svg>Waymark</a>
+<div class="nav-links"><a href="#workspace">Workspace</a><a href="#questions">Questions</a></div>
+<div class="nav-actions"><button class="theme-toggle" data-theme-toggle hidden aria-label="Switch color theme"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z"/></svg></button><a class="button small" href="#download">Get Waymark</a></div>
+</nav></header>
+<main id="main">
+<section class="hero container" aria-labelledby="hero-title">
+<div class="intro-layout"><h1 id="hero-title">Your next chapter.<br>A little more clarity.</h1><div class="intro-aside"><p class="lead">Find suitable roles. Prepare thoughtful applications. Keep your search together.</p><a class="button" href="#workspace">Explore the workspace</a></div></div>
+<figure class="product"><img src="images/workspace-app.png" alt="Waymark application workspace with a sample job application and tailored resume" width="1440" height="1000" fetchpriority="high"><figcaption><span>Your search, in one place.</span><span>Application preview with sample data</span></figcaption></figure>
+</section>
+<section id="workspace" class="section container workflow" aria-labelledby="workspace-title">
+<div class="section-intro"><h2 id="workspace-title">Make room for<br>the right opportunity.</h2><p>From the first promising role to the next conversation.</p></div>
+<div class="feature-rows"><article><h3>Look beyond the score.</h3><p>Review education, experience, and sponsorship requirements separately from how closely a role matches your profile.</p></article><article><h3>Start with your story.</h3><p>Build tailored resumes and cover letters from your profile. Review every draft before sending it.</p></article><article><h3>Keep the thread.</h3><p>Track applications, interviews, and follow-ups alongside connected email and calendar accounts.</p></article></div>
+</section>
+<section class="privacy-band" id="privacy"><div class="container privacy"><h2>A personal workspace.<br>On your computer.</h2><div><p class="lead">Your profile and applications live locally. You choose which AI provider helps with the writing.</p><p>Cloud AI and connected email services receive the information needed for the features you enable. Local storage doesn’t mean every feature works offline.</p></div></div></section>
+<section id="questions" class="section container questions" aria-labelledby="questions-title"><h2 id="questions-title">Before you begin.</h2><div class="answers">
+<details><summary>Can I use my existing AI setup?</summary><p>Choose a supported cloud provider with your own API key, or a local model. The existing local app also supports a ChatGPT connection through Codex. Availability and usage limits depend on your provider and plan.</p></details>
+<details><summary>Will it tell me whether I’m eligible?</summary><p>It checks your profile against requirements in the posting and shows the evidence. Missing details stay uncertain. A strong match score does not override a requirement, and you should verify important restrictions with the employer.</p></details>
+<details><summary>Are desktop downloads available?</summary><p>Not yet. macOS and Windows packaging is in development. The current application runs locally through the repository’s setup instructions.</p></details>
+<details><summary>Why will the app be unsigned?</summary><p>The initial desktop release is planned without paid code signing. macOS and Windows may display security warnings or block installation. Installation guidance will accompany each release; managed computers may not allow unsigned apps.</p></details>
+</div></section>
+<section id="download" class="section container download" aria-labelledby="download-title"><div><h2 id="download-title">A home for<br>your next move.</h2><p>Waymark for your desktop is on the way.</p></div><div class="platforms"><div class="platform"><h3>macOS</h3><span>Installer in development</span></div><div class="platform"><h3>Windows</h3><span>Installer in development</span></div><p>Already running the local app? Your workspace stays on your computer. No hosted account is needed.</p></div></section>
+</main>
+<footer><div class="container"><div class="footer-main"><a class="brand" href="#top">Waymark</a><p>A little more clarity for what comes next.</p><a href="#download">Desktop availability</a></div><div class="footer-credit"><p>Built on <a href="https://github.com/AienTech/dossier">Dossier by AienTech</a>. Redesigned and extended by Augustine Antony Joy.</p><p>Licensed under <a href="https://www.gnu.org/licenses/agpl-3.0.html">AGPL-3.0</a>.</p></div></div></footer>
+</body></html>
