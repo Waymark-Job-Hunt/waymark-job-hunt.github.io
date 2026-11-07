@@ -80,3 +80,5 @@ footer { background: var(--color-paper-2); padding-block: 52px 28px; }
 @media (max-width: 360px) { .theme-toggle { width: 36px; height: 36px; } .navigation { gap: var(--space-xs); } .nav-actions { gap: var(--space-2xs); } .button.small { padding-inline: var(--space-xs); font-size: 13px; } }
 
 .product img { height: clamp(220px, 34vw, 440px); object-fit: cover; object-position: top; }
+
+@media (max-width: 640px) { .platform:has(.button) { align-items: flex-start; flex-direction: column; } }
