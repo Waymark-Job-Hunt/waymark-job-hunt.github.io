@@ -1,0 +1,35 @@
+name: Windows database diagnostic
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  database:
+    runs-on: windows-2025
+    timeout-minutes: 5
+    steps:
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24.14.0'
+          package-manager-cache: false
+      - run: npm install embedded-postgres@18.6.0-beta.19
+      - name: Diagnose database startup
+        run: |
+          @'
+          const {default: EmbeddedPostgres} = await import('embedded-postgres');
+          const {spawnSync}=await import('node:child_process');
+          const fs=await import('node:fs/promises');
+          const path=await import('node:path');
+          const dbdir=path.resolve('test-database');
+          const db=new EmbeddedPostgres({databaseDir:dbdir,user:'waymark',password:'temporary-test-only',port:54329,persistent:true,authMethod:'scram-sha-256',initdbFlags:['--encoding=UTF8','--locale=C'],postgresFlags:['-h','127.0.0.1','-c','max_connections=30','-c','shared_buffers=64MB'],onLog:console.log,onError:console.error});
+          await db.initialise();
+          try { await db.start(); console.log('DIRECT START PASSED'); await db.stop(); }
+          catch(error) { console.log('DIRECT START FAILED',error); }
+          const ctl=path.resolve('node_modules/@embedded-postgres/windows-x64/native/bin/pg_ctl.exe');
+          const log=path.resolve('pg.log');
+          const result=spawnSync(ctl,['-D',dbdir,'-w','-t','20','-l',log,'-o','-h 127.0.0.1 -p 54329 -c max_connections=30 -c shared_buffers=64MB','start'],{encoding:'utf8'});
+          console.log('PG_CTL',result.status,result.stdout,result.stderr);
+          console.log(await fs.readFile(log,'utf8').catch(()=>'(no log)'));
+          spawnSync(ctl,['-D',dbdir,'-m','fast','-w','stop']);
+          process.exit(result.status===0?0:1);
+          '@ | Set-Content database-test.mjs
+          node database-test.mjs
