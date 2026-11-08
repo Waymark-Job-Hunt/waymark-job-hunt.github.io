@@ -43,10 +43,15 @@ jobs:
       - name: Build bundled Windows runtime
         working-directory: app
         run: node desktop/prepare.mjs
+      - name: Test staged Windows runtime
+        working-directory: app
+        timeout-minutes: 5
+        run: node desktop/smoke.cjs
       - name: Build installer
         working-directory: app
         run: npm --prefix desktop run package:windows
       - name: Install and test the actual installer
+        timeout-minutes: 7
         working-directory: app
         run: |
           $installer = (Resolve-Path 'desktop/dist/Waymark-0.1.3-Windows-x64-Setup.exe').Path
