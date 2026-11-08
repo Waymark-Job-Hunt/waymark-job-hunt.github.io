@@ -16,20 +16,21 @@ jobs:
         run: |
           @'
           const {default: EmbeddedPostgres} = await import('embedded-postgres');
-          const {spawnSync}=await import('node:child_process');
+          const {spawn}=await import('node:child_process');
           const fs=await import('node:fs/promises');
           const path=await import('node:path');
           const dbdir=path.resolve('test-database');
           const db=new EmbeddedPostgres({databaseDir:dbdir,user:'waymark',password:'temporary-test-only',port:54329,persistent:true,authMethod:'scram-sha-256',initdbFlags:['--encoding=UTF8','--locale=C'],postgresFlags:['-h','127.0.0.1','-c','max_connections=30','-c','shared_buffers=64MB'],onLog:console.log,onError:console.error});
           await db.initialise();
-          try { await db.start(); console.log('DIRECT START PASSED'); await db.stop(); }
-          catch(error) { console.log('DIRECT START FAILED',error); }
           const ctl=path.resolve('node_modules/@embedded-postgres/windows-x64/native/bin/pg_ctl.exe');
           const log=path.resolve('pg.log');
-          const result=spawnSync(ctl,['-D',dbdir,'-w','-t','20','-l',log,'-o','-h 127.0.0.1 -p 54329 -c max_connections=30 -c shared_buffers=64MB','start'],{encoding:'utf8'});
-          console.log('PG_CTL',result.status,result.stdout,result.stderr);
-          console.log(await fs.readFile(log,'utf8').catch(()=>'(no log)'));
-          spawnSync(ctl,['-D',dbdir,'-m','fast','-w','stop']);
-          process.exit(result.status===0?0:1);
+          const run=args=>new Promise((resolve,reject)=>{const child=spawn(ctl,args,{stdio:'ignore',windowsHide:true});child.on('error',reject);child.on('exit',code=>code===0?resolve():reject(Error('pg_ctl exit '+code)));});
+          await run(['-D',dbdir,'-w','-t','20','-l',log,'-o','-h 127.0.0.1 -p 54329 -c max_connections=30 -c shared_buffers=64MB','start']);
+          const {Client}=await import('pg');
+          const client=new Client({host:'127.0.0.1',port:54329,user:'waymark',password:'temporary-test-only',database:'postgres'});
+          await client.connect(); await client.query('SELECT 1'); await client.end();
+          await run(['-D',dbdir,'-m','fast','-w','-t','10','stop']);
+          console.log('PASS: native Windows launcher, authenticated query, clean shutdown.');
+          process.exit(0);
           '@ | Set-Content database-test.mjs
           node database-test.mjs
